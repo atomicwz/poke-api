@@ -13,6 +13,8 @@ const Pokedex = () => {
   const { theme } = useContext(ThemeContext);
   const [count, setCount] = useState(pokeRender);
   const [search, setSearch] = useState("");
+  const [showMore, setShowMore] = useState(true)
+  const [error, setError] = useState(false)
 
   // Função para aumentar a quantidade de itens no fetch
   const viewMore = () => {
@@ -37,9 +39,16 @@ const Pokedex = () => {
     event.preventDefault();
     
     const pokeFilter = pokemons.filter((pokemon) => {
-      if(search === pokemon.name) {
+      setShowMore(false)
+
+      if(!search) return setPokemons(pokemons)
+
+      if(search === pokemon.name){ 
         return pokemon
+      } else {
+        setError(true)
       }
+
     });
     setPokemons(pokeFilter)
   };
@@ -56,8 +65,9 @@ const Pokedex = () => {
 
       </Form>
       <ul>
-        {pokemons.map((pokemon, index) => {
+        { !error ? pokemons.map((pokemon, index) => {
           return (
+
             <Link key={index} to={`/post/${pokemon.id}`}>
               <li
                 style={{ color: theme.color, background: theme.backgroundCard }}
@@ -69,11 +79,15 @@ const Pokedex = () => {
                 />
                 <h4 style={{ color: theme.color }}>{pokemon.name}</h4>
               </li>
-            </Link>
-          );
-        })}
+            </Link> 
+          )
+            
+          ;
+        }) : <h1>Pokemon não encontrado</h1> }
       </ul>
-      <ViewMoreButton onClick={viewMore}>Ver mais</ViewMoreButton>
+
+      { showMore && <ViewMoreButton onClick={viewMore}>Ver mais</ViewMoreButton> }
+
     </Section>
   );
 };
