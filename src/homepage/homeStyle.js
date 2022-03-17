@@ -61,6 +61,11 @@ export const Section = styled.section`
     text-transform: uppercase;
     margin-top: 20px;
   }
+
+  ul h1{
+    font-size: 1.4rem;
+    grid-column: 1/3
+  }
   img{
   &:hover {
     transform: scale(1.1);
